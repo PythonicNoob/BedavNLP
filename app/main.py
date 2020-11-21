@@ -17,12 +17,12 @@ CORS(app)
 # nlp = spacy.load("en_core_web_sm")
 # print("Loaded language model")
 
-@app.route('/process-bc7wnbd8', methods=['POST'])
+@app.route('/api', methods=['POST'])
 @cross_origin()
 def get_keywords():
     query_string = request.form["query-string"]
     return jsonify(rk.process_sentence(query_string))
-@app.route('/process-bc7wnbd8', methods=['GET'])
+@app.route('/api', methods=['GET'])
 def return_get_request():
     return jsonify({"hello":"hi please use post!"})
 # @app.route('/api/fuzzy-matches', methods=['POST'])

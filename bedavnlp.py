@@ -111,7 +111,7 @@ def get_id_n_location(tagged_elements):
         if el[1].startswith('J') or el[1].startswith('N') or el[1].startswith('PRP'):
             # print("processing location")
             if i > 0:
-                    if tagged_elements[i - 1][0] in ['in', 'on', 'at', 'near', 'around', 'of']:
+                    if get_element(tagged_elements,i - 1,[None])[0] in ['in', 'on', 'at', 'near', 'around', 'of']:
                         # print("Location:", el[0])
                         location += ' '+el[0]
                         last_word_location = True
@@ -125,12 +125,12 @@ def get_id_n_location(tagged_elements):
                             else:
                                 curr_word += ' ' + el[0]
             else: curr_word = el[0] #; print(location)
-        elif el[1].startswith("VB") and tagged_elements[i - 1][1].startswith("TO"):
+        elif el[1].startswith("VB") and get_element(tagged_elements,i - 1,[None,None])[1].startswith("TO"):
             location = el[0]
             last_word_location = True
             # pass
         elif el[1].startswith("CD"):
-            if get_element(tagged_elements[i - 1], 0) in ['in', 'on', 'at', 'near', 'around', 'to', 'id', 'of', 'hospital','clinic','building'] or get_element(tagged_elements[i - 1],1) in ['TO','IN'] or get_element(tagged_elements[i + 1:i + 2][0],0, default=[]) in ['id'] + common_after_words: id = el[0]
+            if get_element(get_element(tagged_elements,i - 1,[None]), 0) in ['in', 'on', 'at', 'near', 'around', 'to', 'id', 'of', 'hospital','clinic','building', 'number'] or get_element(get_element(tagged_elements,i - 1,[None,None]),1) in ['TO','IN'] or get_element(get_element(tagged_elements,i + 1,[None]),0, default=[]) in (['id'] + common_after_words): id = el[0]
         elif "near" in el[0]:
             if last_word_location:
                 location += " near"
@@ -171,7 +171,7 @@ def get_pronoun_n_location(tagged_elements):
     for i, el in enumerate(tagged_elements):
         if el[1].startswith('J') or el[1].startswith('N') or el[1].startswith('PRP'):
             if i > 0:
-                    if tagged_elements[i - 1][0] in ['in', 'on', 'at', 'near', 'around', 'of']:
+                    if get_element(tagged_elements,i - 1,[None])[0] in ['in', 'on', 'at', 'near', 'around', 'of']:
                         # print("Location:", el[0])
                         location += ' '+el[0]
                         last_word_location = True
@@ -196,7 +196,7 @@ def get_pronoun_n_location(tagged_elements):
     # print('\n\n')
     # print("Phrases")
     query = list_of_phrases[0]
-    query = ' '.join([w for w in query.split(' ') if not w in eng_stopwords])
+    query = ' '.join([w for w in query.split(' ') if not w in eng_stopwords+post_processing_remove_words])
 
     for wrd in post_processing_remove_words:
         query = query.replace(wrd, '') if query is not None else None
@@ -217,9 +217,9 @@ frequency_of_words = pandas.read_csv('app/unigram_freq.csv')
 dir_words = ["direction","way","path","location","position","spot","place",]#"directions","positions","paths"
 dir_words.extend([word+"s" for word in dir_words])
 # near_words = ""
-common_after_words = ["id","hospital","clinic", "informary", 'dispensary']
-eng_stopwords = set(stopwords.words("english")) - {'in','on','at','near', 'around'}
-
+common_after_words = ["id","hospital","clinic", "informary", 'dispensary','building', 'number']
+# eng_stopwords = set(stopwords.words("english")) - {'in','on','at','near', 'around'}
+eng_stopwords = stopwords.words("english")
 post_processing_remove_words = dir_words+common_after_words
 
 def main():

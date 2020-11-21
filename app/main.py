@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 
 import bedavnlp as rk
+import traceback as tb
 
 import subprocess
 
@@ -27,7 +28,13 @@ def get_keywords():
     except:
         query_string = request.form["query-string"]
         if query_string is None: return
-    return jsonify(rk.process_sentence(query_string))
+    try:
+        data = rk.process_sentence(query_string)
+    except Exception as e:
+        print(e)
+        tb.print_exc()
+        data = {"error":"could not process","error details":str(e)}
+    return jsonify(data)
 @app.route('/process-bc7wnbd8', methods=['GET'])
 def return_get_request():
     return jsonify({"hello":"hi please use post!"})

@@ -20,7 +20,13 @@ CORS(app)
 @app.route('/process-bc7wnbd8', methods=['POST'])
 @cross_origin()
 def get_keywords():
-    query_string = request.form["query-string"]
+    try:
+        query_string = request.json.get("query-string")
+        print("QQuery string in json:", query_string)
+        if query_string is None: return
+    except:
+        query_string = request.form["query-string"]
+        if query_string is None: return
     return jsonify(rk.process_sentence(query_string))
 @app.route('/process-bc7wnbd8', methods=['GET'])
 def return_get_request():

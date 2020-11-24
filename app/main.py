@@ -35,7 +35,7 @@ def get_keywords():
         tb.print_exc()
         data = {"error":"could not process","error details":str(e)}
     return jsonify(data)
-@app.route('/process-bc7wnbd8', methods=['GET'])
+@app.route('/api', methods=['GET'])
 def return_get_request():
     return jsonify({"hello":"hi please use post!"})
 # @app.route('/api/fuzzy-matches', methods=['POST'])

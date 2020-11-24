@@ -160,7 +160,7 @@ def get_id_n_location(tagged_elements):
         location = location.replace(wrd, '') if location is not None else None
         # print("A r",location)
 
-    return query, location, id
+    return query.strip(), location.strip(), id.strip()
 
 def get_pronoun_n_location(tagged_elements):
     # tagged_elements = pos_tag(sentence.split())
@@ -202,7 +202,7 @@ def get_pronoun_n_location(tagged_elements):
         query = query.replace(wrd, '') if query is not None else None
         location = location.replace(wrd, '') if location is not None else None
         # print("A r",location)
-    return query, location
+    return query.strip(), location.strip()
 
 # sentence = input("String:\n")
 sentences = []
@@ -223,6 +223,8 @@ common_after_words = ["id","hospital","clinic", "informary", 'dispensary','build
 # eng_stopwords = set(stopwords.words("english")) - {'in','on','at','near', 'around'}
 eng_stopwords = stopwords.words("english")
 post_processing_remove_words = dir_words+common_after_words
+with open("post_processing_words_tbr.txt","r") as file:
+    post_processing_remove_words += [line.strip() for line in file.readlines()]
 
 def main():
     for sentence in sentences:

@@ -209,10 +209,12 @@ sentences = []
 # sentences += ["please help me message me the detail about sakra hospital in bangalore karnataka","I need help to find a hospital with ventilators in bangalore", "Please search for appollo hospital in bangalore","Please give me details about the fortis hospital in delhi","search for columbia hospital near sarjapur road", "please tell me details of the appollo clinic near me","can you search for manipal hospitals in pune?","search for xyz near sarjapur road","search for a hospital in pune","Please find a hospital near me", ]
 # sentence =
 # sentences += ["Please give me directions to a hospital near me","Please give me directions to appollo hospital","Please give me directions to 29 hospital", "please give me direction to hospital with 29 id", "Please give me direction to 29th hospital", "Please give direction to hospital 29", "Please give me direction to 29 hospital", "please give direction of 29 hospital", "Please give me location for the 29th hospital","Please give direction to appollo hospital 29", "Pass directions to 21", "tell the directions to 31", "tell 32 hospital location", "give location of sakra hopital at 36 id"]
-sentences += ["are give me the location of the nearest hospital"]
+# sentences += ["are give me the location of the nearest hospital"]
+
+sentences += ["search sakra in bangalore"]
 pos_tags_tbr = ['DT'] #Position tags to be removed while cleaning text
 
-frequency_of_words = pandas.read_csv('app/unigram_freq.csv')
+frequency_of_words = pandas.read_csv('unigram_freq.csv')
 
 dir_words = ["direction","way","path","location","position","spot","place",]#"directions","positions","paths"
 dir_words.extend([word+"s" for word in dir_words])
@@ -230,7 +232,7 @@ def main():
         tagged_elements = pos_tag(sentence.split())
         asking_direction = False
         for word, tp in tagged_elements:
-            # print("pos_tag:",word, tp)
+            print("pos_tag:",word, tp)
             if tp.startswith("N"):
                 for trgt in dir_words:
                     if word in trgt and len(word)>2: asking_direction = True  # make it so it matches words rather trying to find a word

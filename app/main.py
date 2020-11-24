@@ -22,11 +22,11 @@ CORS(app)
 @cross_origin()
 def get_keywords():
     try:
-        query_string = request.json.get("query-string")
-        print("QQuery string in json:", query_string)
+        query_string = request.json.get("query")
+        print("Query string in json:", query_string)
         if query_string is None: return
     except:
-        query_string = request.form["query-string"]
+        query_string = request.form["query"]
         if query_string is None: return
     try:
         data = rk.process_sentence(query_string)

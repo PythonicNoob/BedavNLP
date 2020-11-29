@@ -160,7 +160,7 @@ def get_id_n_location(tagged_elements):
         location = location.replace(wrd, '') if location is not None else None
         # print("A r",location)
 
-    return query.strip(), location.strip(), id.strip()
+    return query.strip(), location.strip(), id
 
 def get_pronoun_n_location(tagged_elements):
     # tagged_elements = pos_tag(sentence.split())
@@ -261,6 +261,7 @@ def process_sentence(text):
     if asking_direction:
         qry, location, id = get_id_n_location(tagged_elements)
         data = {
+            "queryType": "direction",
             "location": location,
             "id": id
         }
@@ -268,6 +269,7 @@ def process_sentence(text):
     else:
         qry, location = get_pronoun_n_location(tagged_elements)
         data = {
+            "queryType": "search",
             "keyword" : qry,
             "location": location
         }
